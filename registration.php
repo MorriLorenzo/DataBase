@@ -61,6 +61,26 @@
                 <input type="password" name="password" required>
             </div>
             <div class="form-group">
+                <label>Stato</label>
+                <input type="text" name="stato" required>
+            </div>
+            <div class="form-group">
+                <label>CAP</label>
+                <input type="text" name="cap" required>
+            </div>
+            <div class="form-group">
+                <label>Provincia</label>
+                <input type="text" name="provincia" required>
+            </div>
+            <div class="form-group">
+                <label>Via</label>
+                <input type="text" name="via" required>
+            </div>
+            <div class="form-group">
+                <label>Civico</label>
+                <input type="text" name="civico" required>
+            </div>
+            <div class="form-group">
                 <button type="submit">Registrati</button>
             </div>
         </form>
