@@ -30,6 +30,13 @@ $bloccato = 0;
 $valutazioneTotale = 0;
 $numeroRecensioni = 0;
 
+// Verifica se l'email esiste già
+$user = getUserByEmail($email);
+if ($user) {
+    echo "<p>Email già utilizzata. <a href='registration.php'>Torna indietro</a></p>";
+    exit();
+}
+
 try {
     // Inizio transazione
     $conn->begin_transaction();
@@ -93,4 +100,31 @@ try {
 }
 $stmt->close();
 $conn->close();
+
+// Funzione per ottenere un utente dal database tramite email
+function getUserByEmail($email) {
+
+    // Connessione al database
+    $servername = "localhost";
+    $username = "utente"; // Inserisci il tuo username di MySQL
+    $password = "utente"; // Inserisci la tua password di MySQL
+    $dbname = "cardmarket"; // Inserisci il nome del tuo database
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    if ($conn->connect_error) {
+        die("Connessione fallita: " . $conn->connect_error);
+    }
+
+    // Query per selezionare l'utente tramite email
+    $stmt = $conn->prepare("SELECT Email FROM UTENTE WHERE Email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    $stmt->close();
+    $conn->close();
+
+    return $user; // Restituisce l'utente trovato o NULL se non esiste
+}
 ?>
