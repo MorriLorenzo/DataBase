@@ -85,7 +85,7 @@ try {
     // Commit della transazione
     $conn->commit();
 
-    echo "Registrazione avvenuta con successo. <a href='action/login.php'>Accedi</a>";
+    echo "Registrazione avvenuta con successo. <a href='login.php'>Accedi</a>";
 }catch (Exception $e) {
     // Rollback della transazione in caso di errore
     $conn->rollback();
