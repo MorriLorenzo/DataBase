@@ -32,7 +32,7 @@ if ($result->num_rows == 1) {
 } else {
     // Login fallito
     $_SESSION['error_msg'] = "Email o password non validi.";
-    header("Location: login.php"); // Redirect alla pagina di login
+    header("Location: action/login.php"); // Redirect alla pagina di login
 }
 
 $stmt->close();
