@@ -32,3 +32,7 @@
     </tr>
   <?php endforeach; ?>
 </table>
+
+<form action="./index.php?model=logout" method="post">
+    <button type="submit" name="termina">Termina Sessione</button>
+</form>

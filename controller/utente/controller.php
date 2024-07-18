@@ -10,10 +10,9 @@ if (isset($_GET['azione'])){  //controlla se è una variabile e diversa da null
 switch ($azione) {
     case 'profilo':
         // Comunico con il modello per la restituzione dei dati
-        $utente = UtenteTabella::getByEmail('logamorri@gmail.com');
-        $indirizzi = IndirizzoTabella::getIndirizziByEmail('logamorri@gmail.com');
+        $utente = UtenteTabella::getByEmail($_SESSION['email']);
+        $indirizzi = IndirizzoTabella::getIndirizziByEmail($_SESSION['email']);
         // Ottenuti i dati li passo alla vista che li rappresenta
         $view_name = "./view/profile.php"; //Valorizzo il nome della vista dedicata
-        printf($view_name);
         break;
 }

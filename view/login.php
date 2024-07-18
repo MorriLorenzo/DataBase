@@ -1,8 +1,9 @@
 <div class="login-container">
     <h2>Login</h2>
-
-    <?php if (isset($_SESSION['error_msg']) && !empty($_SESSION['error_msg'])): ?>
-        <div class="error-message"><?php echo $_SESSION['error_msg']; ?></div>
+   
+    <?php if (isset($_SESSION['error_msg'])): ?>
+        <p class="error-message"><?php echo $_SESSION['error_msg']; ?></p>
+        <?php unset($_SESSION['error_msg']); ?>
     <?php endif; ?>
 
     <form action="index.php?model=login&action=process" method="POST">
