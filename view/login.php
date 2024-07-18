@@ -1,0 +1,22 @@
+<div class="login-container">
+    <h2>Login</h2>
+
+    <?php if (isset($_SESSION['error_msg']) && !empty($_SESSION['error_msg'])): ?>
+        <div class="error-message"><?php echo $_SESSION['error_msg']; ?></div>
+    <?php endif; ?>
+
+    <form action="index.php?model=login&action=process" method="POST">
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <button type="submit">Login</button>
+        </div>
+    </form>
+    <p>Non hai un account? <a href="#">Registrati</a></p>
+</div>
