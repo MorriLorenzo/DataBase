@@ -14,25 +14,48 @@ class UtenteTabella {
         $bloccato = $utente->isBloccato() ? 1 : 0; // Converte booleano in intero
         $valutazioneTotale = $utente->getValutazioneTotale();
         $numeroRecensioni = $utente->getNumeroRecensioni();
+        if(!self::presente($utente)){
+            // Query SQL per l'inserimento di un nuovo utente
+            $query = "INSERT INTO UTENTE (Email, Nome, Cognome, Password, Bloccato, ValutazioneTotale, NumeroRecensioni)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        // Query SQL per l'inserimento di un nuovo utente
-        $query = "INSERT INTO UTENTE (Email, Nome, Cognome, Password, Bloccato, ValutazioneTotale, NumeroRecensioni)
-                  VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // Preparazione della query utilizzando la connessione già esistente
+            $stmt = Connection::getConnessione()->prepare($query);
+            $stmt->bind_param('ssssiii', $email, $nome, $cognome, $password, $bloccato, $valutazioneTotale, $numeroRecensioni);
 
-        // Preparazione della query utilizzando la connessione già esistente
-        $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('ssssiii', $email, $nome, $cognome, $password, $bloccato, $valutazioneTotale, $numeroRecensioni);
-
-        // Esecuzione della query
-        if ($stmt->execute()) {
-            // Chiudi lo statement
-            $stmt->close();
-            return true; // Inserimento riuscito
-        } else {
-            // Chiudi lo statement
-            $stmt->close();
-            return false; // Inserimento fallito
+            // Esecuzione della query
+            if ($stmt->execute()) {
+                // Chiudi lo statement
+                $stmt->close();
+                return true; // Inserimento riuscito
+            } else {
+                // Chiudi lo statement
+                $stmt->close();
+                return false; // Inserimento fallito
+            }
+        }else{
+            return false;
         }
+    }
+
+    // Metodo per verificare se un utente è già presente nel database
+    private static function presente(Utente $utente) {
+        $email = $utente->getEmail();
+
+        $query = "SELECT COUNT(*) AS count
+                  FROM UTENTE
+                  WHERE Email = ?";
+
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('s', $email);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return $row['count'] > 0;
     }
 
     // Metodo per aggiornare un utente nel database

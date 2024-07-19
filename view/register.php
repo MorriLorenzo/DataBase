@@ -1,5 +1,9 @@
 <div class="register-container">
         <h2>Registrazione</h2>
+            <?php if (isset($_SESSION['error_msg'])): ?>
+            <p class="error-message"><?php echo $_SESSION['error_msg']; ?></p>
+            <?php unset($_SESSION['error_msg']); ?>
+        <?php endif; ?>
         <form action="./index.php?model=login&action=insert" method="POST">
             <div class="form-group">
                 <label>Email</label>
