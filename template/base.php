@@ -41,6 +41,7 @@
     <div class="navbar">
         <a href="./index.php">Home</a>
         <a href="./index.php?model=utente&action=profilo">Profilo</a>
+        <a href="./index.php?model=gioco&action=menu">Giochi</a>
         <a href="./index.php?model=logout" class="right">Logout</a>
     </div>
 
@@ -48,7 +49,7 @@
 
 
     <?php
-        // Includi il file della vista qui
+        // Includi il file della vista qui 
         include($view_name);
     ?>
 </body>
