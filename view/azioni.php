@@ -3,8 +3,7 @@ echo "SONO ADMIN WOW";
 ?>
 
 <div class="link-container">
-    <a href="#">Aggiungi gioco</a>
-    <a href="#">Modifica gioco</a>
+    <a href="./index.php?model=admin&action=gioco">Lista giochi</a>
     <a href="#">Aggiungi sett</a>
     <a href="#">Modifica sett</a>
     <a href="#">Aggiungi carta</a>

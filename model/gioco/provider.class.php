@@ -30,9 +30,7 @@ class GiocoTabella {
     }
 
     // Metodo per aggiornare un utente nel database
-    public static function update(Gioco $gioco) {
-        // Estrai i valori dell'oggetto Gioco
-        $nome = $gioco->getNome();
+    public static function update($nome, $nuovoNome) {
 
         // Query SQL per l'aggiornamento di un gioco
         $query = "UPDATE GIOCO
@@ -115,41 +113,42 @@ class GiocoTabella {
 
     public static function getByNome($nome) {
 
-        // Query SQL per ottenere l'utente
+        // Query SQL per ottenere il gioco
         $query = "SELECT * FROM GIOCO WHERE Nome = ?";
         
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
         $stmt->bind_param('s', $nome); // 's' indica il tipo di parametro (stringa)
-
+    
         // Esecuzione della query
         $stmt->execute();
-
+    
         // Ottieni il risultato della query
         $result = $stmt->get_result();
-
+    
         // Verifica se è stato trovato un risultato
         if ($result->num_rows == 1) {
-            // Estrai i dati dell'utente
+            // Estrai i dati del gioco
             $row = $result->fetch_assoc();
-
+    
             // Costruisci un oggetto Gioco con i dati estratti
-            $utente = new Utente(
-                $row['Nome'],
+            $gioco = new Gioco(
+                $row['Nome']
             );
-
+    
             // Chiudi lo statement
             $stmt->close();
-
-            // Ritorna l'oggetto Utente
+    
+            // Ritorna l'oggetto Gioco
             return $gioco;
         } else {
             // Chiudi lo statement
             $stmt->close();
-
-            // Ritorna NULL se l'utente non è stato trovato
+    
+            // Ritorna NULL se il gioco non è stato trovato
             return null;
         }
     }
+    
 }
 ?>
