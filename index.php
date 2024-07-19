@@ -33,6 +33,7 @@ if (!isset($_SESSION['email'])) {
             break;
         case 'sett':
             include("controller/sett/controller.php");
+            break;
         case 'admin':
             if(UtenteTabella::isAdmin($_SESSION['email'])){
                 include("controller/admin/controller.php");

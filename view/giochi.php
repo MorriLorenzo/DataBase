@@ -4,7 +4,7 @@
   <?php foreach ($giochi as $gioco): ?>
     <tr>
       <td><?php echo $gioco->getNome(); ?></td>
-      <td><a href="?model=sett&action=menu&nome=<?php echo $gioco->getNome()?>">visualizza set associati</a></td>
+      <td><a href="./index.php?model=sett&action=menu&nome=<?php echo $gioco->getNome()?>">visualizza set associati</a></td>
     </tr>
   <?php endforeach; ?>
   </tr>
