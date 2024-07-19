@@ -14,6 +14,9 @@
   </tr>
 </table>
 <h2>Indirizzi associati</h2>
+<form action="./index.php?model=utente&action=indirizzo" method="post">
+    <button type="submit" name="termina">Aggiungi Indirizzo</button>
+</form>
 <table>
   <tr>
     <th>Stato</th>

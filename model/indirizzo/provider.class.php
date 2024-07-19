@@ -240,18 +240,41 @@ class IndirizzoTabella {
 
     // Metodo per associare un indirizzo a un utente
     public static function associaIndirizzoUtente($idIndirizzo, $email) {
-        $query = "INSERT INTO RISIEDE (IdUtente, IdIndirizzo) VALUES (?, ?)";
+        if (!self::associazioneEsistente($idIndirizzo, $email)) {
+            $query = "INSERT INTO RISIEDE (IdUtente, IdIndirizzo) VALUES (?, ?)";
+
+            $stmt = Connection::getConnessione()->prepare($query);
+            $stmt->bind_param('si', $email, $idIndirizzo);
+
+            if ($stmt->execute()) {
+                $stmt->close();
+                return true; // Inserimento riuscito
+            } else {
+                $stmt->close();
+                return false; // Inserimento fallito
+            }
+        } else {
+            // L'associazione esiste già
+            return true;
+        }
+    }
+
+    // Metodo per verificare se l'associazione tra indirizzo e utente esiste già
+    private static function associazioneEsistente($idIndirizzo, $email) {
+        $query = "SELECT COUNT(*) AS count
+                  FROM RISIEDE
+                  WHERE IdUtente = ? AND IdIndirizzo = ?";
 
         $stmt = Connection::getConnessione()->prepare($query);
         $stmt->bind_param('si', $email, $idIndirizzo);
 
-        if ($stmt->execute()) {
-            $stmt->close();
-            return true; // Inserimento riuscito
-        } else {
-            $stmt->close();
-            return false; // Inserimento fallito
-        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return $row['count'] > 0;
     }
 }
 ?>

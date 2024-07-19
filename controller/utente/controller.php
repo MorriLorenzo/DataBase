@@ -15,4 +15,34 @@ switch ($azione) {
         // Ottenuti i dati li passo alla vista che li rappresenta
         $view_name = "./view/profile.php"; //Valorizzo il nome della vista dedicata
         break;
+    case 'indirizzo':
+        $view_name = "./view/indirizzo.php";
+        break;
+    case 'indirizzoi':
+        $email = $_SESSION['email'];
+        // Assegna le variabili dai dati inviati tramite POST per Indirizzo
+        $id = 0; // Può essere un valore predefinito o null se non è necessario immediatamente
+        $stato = $_POST['stato'];
+        $cap = $_POST['cap'];
+        $provincia = $_POST['provincia'];
+        $via = $_POST['via'];
+        $civico = $_POST['civico'];
+
+        // Crea l'oggetto Indirizzo passando le variabili
+        $indirizzo = new Indirizzo(
+            $id,
+            $stato,
+            $cap,
+            $provincia,
+            $via,
+            $civico
+        );
+
+        IndirizzoTabella::insert($indirizzo,$email);
+        
+        $utente = UtenteTabella::getByEmail($_SESSION['email']);
+        $indirizzi = IndirizzoTabella::getIndirizziByEmail($_SESSION['email']);
+        // Ottenuti i dati li passo alla vista che li rappresenta
+        $view_name = "./view/profile.php"; //Valorizzo il nome della vista dedicata
+        break;
 }
