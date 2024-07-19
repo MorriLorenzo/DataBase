@@ -30,6 +30,17 @@ if (!isset($_SESSION['email'])) {
             break;
         case 'gioco':
             include("controller/gioco/controller.php");
+            break;
+        case 'admin':
+            if(UtenteTabella::isAdmin($_SESSION['email'])){
+                include("controller/admin/controller.php");
+            }else{
+                header("Location: index.php");
+            }
+            break;
+        case 'carrello':
+            include("controller/carrello/controller.php");
+            break;
         default:
             // Gestione di un caso non valido o predefinito
             // Qui potresti mostrare un errore o eseguire un'altra azione

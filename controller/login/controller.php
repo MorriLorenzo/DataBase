@@ -84,6 +84,7 @@ switch ($azione) {
         } else {
             // Se l'inserimento dell'utente ha successo, prova ad inserire l'indirizzo
             if (IndirizzoTabella::insert($indirizzo, $email)) {
+                CarrelloTabella::insert($email);
                 // Se l'inserimento dell'indirizzo ha successo, reindirizza alla pagina principale
                 header("Location: index.php");
                 exit(); // Assicurati di interrompere l'esecuzione dello script dopo il reindirizzamento
