@@ -10,6 +10,6 @@
   </tr>
 </table>
 
-<form action="./index.php?model=utente&action=profilo" method="post">
+<form action="./index.php?model=utente&action=profile" method="post">
     <button type="submit" name="termina">Profilo utente</button>
 </form>
