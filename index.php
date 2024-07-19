@@ -30,6 +30,10 @@ if (!isset($_SESSION['email'])) {
             break;
         case 'gioco':
             include("controller/gioco/controller.php");
+            break;
+        case 'sett':
+            include("controller/sett/controller.php");
+            break;
         default:
             // Gestione di un caso non valido o predefinito
             // Qui potresti mostrare un errore o eseguire un'altra azione
