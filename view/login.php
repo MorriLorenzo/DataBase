@@ -18,6 +18,6 @@
         <div class="form-group">
             <button type="submit">Login</button>
         </div>
+        <p>Non hai un account? <a href="./index.php?model=login&action=register">Registrati</a></p>
     </form>
-    <p>Non hai un account? <a href="./index.php?model=login&action=register">Registrati</a></p>
 </div>

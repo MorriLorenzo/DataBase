@@ -13,7 +13,7 @@
     <td><?php echo $utente->getEmail(); ?></td>
   </tr>
 </table>
-<h2>Indirizzi associati</h2>
+<h1>Indirizzi associati</h1>
 <form action="./index.php?model=utente&action=indirizzo" method="post">
     <button type="submit" name="termina">Aggiungi Indirizzo</button>
 </form>
