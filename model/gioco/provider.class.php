@@ -30,9 +30,7 @@ class GiocoTabella {
     }
 
     // Metodo per aggiornare un utente nel database
-    public static function update(Gioco $gioco) {
-        // Estrai i valori dell'oggetto Gioco
-        $nome = $gioco->getNome();
+    public static function update($nome, $nuovoNome) {
 
         // Query SQL per l'aggiornamento di un gioco
         $query = "UPDATE GIOCO
@@ -134,7 +132,7 @@ class GiocoTabella {
             $row = $result->fetch_assoc();
 
             // Costruisci un oggetto Gioco con i dati estratti
-            $utente = new Utente(
+            $gioco = new Gioco(
                 $row['Nome'],
             );
 

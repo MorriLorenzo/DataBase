@@ -1,23 +1,25 @@
 <?php
 
-class SettTabella {
+class CartaTabella {
 
     // Connessione al database e altre operazioni di gestione dei dati potrebbero essere gestite qui
 
     // Metodo per inserire un nuovo utente nel database
-    public static function insert(Sett $sett) {
+    public static function insert(Carta $carta) {
         // Estrai i valori dell'oggetto Utente
-        $nome = $sett->getNome();
-        $codice = $sett->getCodice();
-        $nomeGioco = $sett->getNomeGioco();
+        $codice = $carta->getCodice();
+        $lingua = $carta->getLingua();
+        $immagine = $carta->getImmagine();
+        $descrizione = $carta->getDescrizione();
+        $quantita = $carta->getQuantita();
 
         // Query SQL per l'inserimento di un nuovo Gioco
-        $query = "INSERT INTO SETT (Codice,Nome,NomeGioco)
-                  VALUES (?,?,?)";
+        $query = "INSERT INTO CARTA (Codice,lingua,immagine,descrizione,quantita)
+                  VALUES (?,?,?,?,?)";
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('iss', $codice, $nome, $nomeGioco);
+        $stmt->bind_param('isssi', $codice, $lingua, $immagine,$descrizione,$quantita);
 
         // Esecuzione della query
         if ($stmt->execute()) {
@@ -32,16 +34,16 @@ class SettTabella {
     }
 
     // Metodo per aggiornare un utente nel database
-    public static function update($codice,$nome,$nuovoCodice,$NuovoNome,$NuovoNomeGioco) {
+    public static function update($codice,$nuovoCodice,$NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita) {
 
         // Query SQL per l'aggiornamento di un gioco
-        $query = "UPDATE Sett
-                  SET Codice = ?, Nome = ?, NomeGioco = ? 
-                  WHERE Codice = ? AND Nome = ?";
+        $query = "UPDATE CARTA
+                  SET Codice = ?, Lingua = ?, Immagine = ?, Descrizone = ?, Quantita = ?
+                  WHERE Codice = ?";
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('issis', $nuovoCodice, $NuovoNome,$NuovoNomeGioco,$codice,$nome);
+        $stmt->bind_param('isssii', $nuovoCodice, $NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita,$codice);
         // Esecuzione della query
         if ($stmt->execute()) {
             // Chiudi lo statement
@@ -55,13 +57,13 @@ class SettTabella {
     }
 
     // Metodo per eliminare un utente dal database
-    public static function delete($codice,$nome) {
+    public static function delete($codice) {
         // Query SQL per eliminare un utente
-        $query = "DELETE FROM SETT WHERE Codice = ? AND Nome = ?";
+        $query = "DELETE FROM CARTA WHERE Codice = ?";
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('is', $codice,$nome);
+        $stmt->bind_param('i', $codice);
 
         // Esecuzione della query
         if ($stmt->execute()) {
@@ -78,7 +80,7 @@ class SettTabella {
     // Metodo per ottenere tutti gli utenti dal database
     public static function getAll() {
         // Query SQL per ottenere l'utente
-        $query = "SELECT * FROM SETT";
+        $query = "SELECT * FROM CARTA";
         
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
@@ -90,21 +92,23 @@ class SettTabella {
         $result = $stmt->get_result();
 
         // Array per memorizzare gli utenti
-        $setts = array();
+        $carte = array();
 
         // Verifica se è stato trovato un risultato
         if ($result->num_rows > 0) {
 
             while ($row = $result->fetch_assoc()) {
                 // Costruisci un oggetto Utente con i dati estratti
-                $sett = new Sett(
+                $carta = new Carta(
                     $row['Codice'],
-                    $row['Nome'],
-                    $row['NomeGioco'],
+                    $row['Lingua'],
+                    $row['Immagine'],
+                    $row['Descrizione'],
+                    $row['Quantita'],
                 );
 
                 // Aggiungi il gioco all'array
-                $setts[] = $sett;
+                $carte[] = $carta;
             }
         }
     
@@ -112,88 +116,89 @@ class SettTabella {
         $stmt->close();
 
         // Ritorna array Utente
-        return $setts;
+        return $carte;
     }
 
-    public static function getAllByNomeGioco($nomeGioco) {
+    public static function getById($codice) {
         // Query SQL per ottenere l'utente
-        $query = "SELECT * FROM SETT WHERE NomeGioco = ?";
+        $query = "SELECT * FROM CARTA WHERE Codice = ?";
         
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('s',$nomeGioco);
+        $stmt->bind_param('s', $codice);
 
         // Esecuzione della query
         $stmt->execute();
 
         // Ottieni il risultato della query
         $result = $stmt->get_result();
-
-        // Array per memorizzare gli utenti
-        $setts = array();
-
-        // Verifica se è stato trovato un risultato
-        if ($result->num_rows > 0) {
-
-            while ($row = $result->fetch_assoc()) {
-                // Costruisci un oggetto Utente con i dati estratti
-                $sett = new Sett(
-                    $row['Codice'],
-                    $row['Nome'],
-                    $row['NomeGioco'],
-                );
-
-                // Aggiungi il gioco all'array
-                $setts[] = $sett;
-            }
-        }
-    
-        // Chiudi lo statement
-        $stmt->close();
-
-        // Ritorna array Utente
-        return $setts;
-    }
-
-    public static function getByCodiceNome($codice,$nome) {
-
-        // Query SQL per ottenere l'utente
-        $query = "SELECT * FROM SETT WHERE Codice = ? AND Nome = ?";
-        
-        // Preparazione della query utilizzando la connessione già esistente
-        $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('is',$codice, $nome); // 's' indica il tipo di parametro (stringa)
-
-        // Esecuzione della query
-        $stmt->execute();
-
-        // Ottieni il risultato della query
-        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
 
         // Verifica se è stato trovato un risultato
         if ($result->num_rows == 1) {
-            // Estrai i dati dell'utente
-            $row = $result->fetch_assoc();
-
-            // Costruisci un oggetto Gioco con i dati estratti
-            $sett = new Sett(
+            $carta = new Carta(
                 $row['Codice'],
-                $row['Nome'],
-                $row['NomeGioco'],
+                $row['Lingua'],
+                $row['Immagine'],
+                $row['Descrizione'],
+                (int)$row['QuantitàVenduta'],
             );
-
-            // Chiudi lo statement
-            $stmt->close();
-
-            // Ritorna l'oggetto Utente
-            return $sett;
-        } else {
-            // Chiudi lo statement
-            $stmt->close();
-
-            // Ritorna NULL se l'utente non è stato trovato
-            return null;
         }
+    
+        // Chiudi lo statement
+        $stmt->close();
+
+        // Ritorna array Utente
+        return $carta;
     }
+
+    public static function getAllBySett($nomeSet,$codiceSet) {
+        // Query SQL per ottenere l'utente
+        $query = "SELECT * FROM CARTA AS C 
+          JOIN APPARTIENE AS AP ON C.Codice = AP.CodiceCarta 
+          WHERE AP.CodiceSet = ? AND AP.NomeSet = ?";
+        
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('is',$codiceSet,$nomeSet);
+
+        // Esecuzione della query
+        $stmt->execute();
+
+        // Ottieni il risultato della query
+        $result = $stmt->get_result();
+
+        // Array per memorizzare gli utenti
+        $carte = array();
+
+        // Verifica se è stato trovato un risultato
+        if ($result->num_rows > 0) {
+
+            while ($row = $result->fetch_assoc()) {
+                // Costruisci un oggetto Utente con i dati estratti
+                $carta = new Carta(
+                    $row['Codice'],
+                    $row['Lingua'],
+                    $row['Immagine'],
+                    $row['Descrizione'],
+                    $row['Quantita'],
+                );
+
+                // Aggiungi il gioco all'array
+                $carte[] = $carta;
+            }
+        }
+    
+        // Chiudi lo statement
+        $stmt->close();
+
+        // Ritorna array Utente
+        return $carte;
+    }
+/*
+    public static function getByGioco($nome) {
+    //viva le donne!     
+    }
+*/
 }
 ?>
