@@ -19,5 +19,5 @@
             <button type="submit">Login</button>
         </div>
     </form>
-    <p>Non hai un account? <a href="#">Registrati</a></p>
+    <p>Non hai un account? <a href="./index.php?model=login&action=register">Registrati</a></p>
 </div>

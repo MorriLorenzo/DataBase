@@ -1,14 +1,14 @@
 <?php
 
 //Recuperare l'azione da svolgere
-if (isset($_GET['azione'])){  //controlla se è una variabile e diversa da null
-    $azione = $_GET['azione'];
+if (isset($_GET['action'])){  //controlla se è una variabile e diversa da null
+    $azione = $_GET['action'];
 } else {
-    $azione = 'profilo';  //valore di default
+    $azione = 'profile';  //valore di default
 }
 
 switch ($azione) {
-    case 'profilo':
+    case 'profile':
         // Comunico con il modello per la restituzione dei dati
         $utente = UtenteTabella::getByEmail($_SESSION['email']);
         $indirizzi = IndirizzoTabella::getIndirizziByEmail($_SESSION['email']);

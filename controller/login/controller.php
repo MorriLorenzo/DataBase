@@ -4,11 +4,13 @@
 if (isset($_GET['action'])) {
     $azione = $_GET['action'];
 } else {
-    $azione = 'insert'; // Valore di default se non specificato
+    $azione = 'login'; // Valore di default se non specificato
 }
 
+$default=0;
+
 switch ($azione) {
-    case 'insert':
+    case 'login':
         $view_name = "./view/login.php";
         break;
     case 'process':
@@ -33,6 +35,51 @@ switch ($azione) {
         $_SESSION['error_msg'] = $error_msg;
         $view_name = "./view/login.php";
         break;
+        case 'register':
+            //form registrazione
+            $view_name = "./view/register.php";
+            break;
+        case 'insert':
+            //inserimento utente
+            // Assegna le variabili dai dati inviati tramite POST
+            $email = $_POST['email'];
+            $nome = $_POST['nome'];
+            $cognome = $_POST['cognome'];
+            $password = $_POST['password'];
+
+            // Crea l'oggetto Utente passando le variabili
+            $utente = new Utente(
+                $email,
+                $nome,
+                $cognome,
+                $password,
+                $default,
+                $default,
+                $default
+            );
+
+            // Assegna le variabili dai dati inviati tramite POST per Indirizzo
+            $id = $default; // Può essere un valore predefinito o null se non è necessario immediatamente
+            $stato = $_POST['stato'];
+            $cap = $_POST['cap'];
+            $provincia = $_POST['provincia'];
+            $via = $_POST['via'];
+            $civico = $_POST['civico'];
+
+            // Crea l'oggetto Indirizzo passando le variabili
+            $indirizzo = new Indirizzo(
+                $id,
+                $stato,
+                $cap,
+                $provincia,
+                $via,
+                $civico
+            );
+    
+            UtenteTabella::insert($utente);
+            IndirizzoTabella::insert($indirizzo,$email);
+            header("Location: index.php");
+            break;
 }
 
 function login($email, $password) {
