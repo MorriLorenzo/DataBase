@@ -4,11 +4,13 @@
 if (isset($_GET['action'])) {
     $azione = $_GET['action'];
 } else {
-    $azione = 'insert'; // Valore di default se non specificato
+    $azione = 'login'; // Valore di default se non specificato
 }
 
+$default=0;
+
 switch ($azione) {
-    case 'insert':
+    case 'login':
         $view_name = "./view/login.php";
         break;
     case 'process':
@@ -33,6 +35,66 @@ switch ($azione) {
         $_SESSION['error_msg'] = $error_msg;
         $view_name = "./view/login.php";
         break;
+    case 'register':
+        //form registrazione
+        $view_name = "./view/register.php";
+        break;
+    case 'insert':
+        //inserimento utente
+        // Assegna le variabili dai dati inviati tramite POST
+        $email = $_POST['email'];
+        $nome = $_POST['nome'];
+        $cognome = $_POST['cognome'];
+        $password = $_POST['password'];
+
+        // Crea l'oggetto Utente passando le variabili
+        $utente = new Utente(
+            $email,
+            $nome,
+            $cognome,
+            $password,
+            $default,
+            $default,
+            $default
+        );
+
+        // Assegna le variabili dai dati inviati tramite POST per Indirizzo
+        $id = $default; // Può essere un valore predefinito o null se non è necessario immediatamente
+        $stato = $_POST['stato'];
+        $cap = $_POST['cap'];
+        $provincia = $_POST['provincia'];
+        $via = $_POST['via'];
+        $civico = $_POST['civico'];
+
+        // Crea l'oggetto Indirizzo passando le variabili
+        $indirizzo = new Indirizzo(
+            $id,
+            $stato,
+            $cap,
+            $provincia,
+            $via,
+            $civico
+        );
+
+        // Prova a inserire l'utente nel database
+        if (!UtenteTabella::insert($utente)) {
+            // Se l'inserimento dell'utente fallisce, impostiamo un messaggio di errore e reindirizziamo alla pagina di login
+            $_SESSION['error_msg'] = "Email già utilizzata o errore d'inserimento.";
+            $view_name = "./view/register.php";
+        } else {
+            // Se l'inserimento dell'utente ha successo, prova ad inserire l'indirizzo
+            if (IndirizzoTabella::insert($indirizzo, $email)) {
+                // Se l'inserimento dell'indirizzo ha successo, reindirizza alla pagina principale
+                header("Location: index.php");
+                exit(); // Assicurati di interrompere l'esecuzione dello script dopo il reindirizzamento
+            } else {
+                // Se l'inserimento dell'indirizzo fallisce, impostiamo un messaggio di errore e reindirizziamo alla pagina di login
+                $_SESSION['error_msg'] = "Errore nell'inserimento dell'indirizzo.";
+                $view_name = "./view/register.php";
+            }
+        }
+    break;
+
 }
 
 function login($email, $password) {
