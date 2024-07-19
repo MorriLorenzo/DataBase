@@ -199,5 +199,32 @@ class UtenteTabella {
             return null;
         }
     }
+
+    public static function isAdmin($email) {
+        // Preparare la query SQL
+        $query = "SELECT COUNT(*) AS count
+                  FROM AMMINISTRATORE
+                  WHERE EmailUtente = ?";
+    
+        // Preparare la dichiarazione
+        $stmt = Connection::getConnessione()->prepare($query);
+    
+        // Associare il parametro
+        $stmt->bind_param('s', $email);
+    
+        // Eseguire la dichiarazione
+        $stmt->execute();
+        
+        // Ottenere il risultato
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+    
+        // Chiudere la dichiarazione
+        $stmt->close();
+    
+        // Restituire vero se il conteggio è maggiore di 0, altrimenti falso
+        return $row['count'] > 0;
+    }
+    
 }
 ?>

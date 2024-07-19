@@ -8,4 +8,6 @@ require_once('./model/gioco/object.class.php');
 require_once('./model/gioco/provider.class.php');
 require_once('./model/sett/object.class.php');
 require_once('./model/sett/provider.class.php');
+require_once('./model/carrello/object.class.php');
+require_once('./model/carrello/provider.class.php');
 ?>

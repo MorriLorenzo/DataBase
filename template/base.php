@@ -144,6 +144,19 @@
             margin-bottom: 20px;
             text-align: center;
         }
+
+        .link-container {
+            text-align: center;
+        }
+        .link-container a {
+            display: block;
+            margin: 10px 0;
+            text-decoration: none;
+            color: #007BFF; /* Colore del testo per i link */
+        }
+        .link-container a:hover {
+            text-decoration: underline; /* Sottolinea il link al passaggio del mouse */
+        }
     </style>
 
 </head>
@@ -157,6 +170,12 @@
             <a href="./index.php">Home</a>
             <a href="./index.php?model=utente&action=profile">Profilo</a>
             <a href="./index.php?model=gioco&action=menu">Giochi</a>
+
+
+            <?php if (UtenteTabella::isAdmin($_SESSION['email'])): ?>
+                <a href="./index.php?model=admin&action=azioni">Sezione Admin</a>
+            <?php endif; ?>
+            <a href="./index.php?model=carrello" class="right">Carrello</a>
             <a href="./index.php?model=logout" class="right">Logout</a>
         </div>
     </div>
