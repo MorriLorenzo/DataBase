@@ -10,4 +10,6 @@ require_once('./model/sett/object.class.php');
 require_once('./model/sett/provider.class.php');
 require_once('./model/carrello/object.class.php');
 require_once('./model/carrello/provider.class.php');
+require_once('./model/carta/object.class.php');
+require_once('./model/carta/provider.class.php');
 ?>

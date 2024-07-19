@@ -157,6 +157,19 @@
         .link-container a:hover {
             text-decoration: underline; /* Sottolinea il link al passaggio del mouse */
         }
+        .container-img {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 20px;
+            margin-right: 20px;
+        }
+
+        .container-img img {
+            width: 300px; /* Imposta una larghezza fissa */
+            height: auto; /* Mantiene le proporzioni dell'immagine */
+        }
+
     </style>
 
 </head>
