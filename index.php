@@ -14,7 +14,7 @@ if (!isset($_SESSION['email'])) {
     if (isset($_GET['model'])){
         $model = $_GET['model'];
     } else {
-        $model = 'utente'; // Imposta un valore predefinito se $_GET['model'] non è definito
+        $model = 'gioco'; // Imposta un valore predefinito se $_GET['model'] non è definito
     }
 
     switch ($model) {
@@ -28,6 +28,8 @@ if (!isset($_SESSION['email'])) {
             session_destroy();
             header("Location: index.php");
             break;
+        case 'gioco':
+            include("controller/gioco/controller.php");
         default:
             // Gestione di un caso non valido o predefinito
             // Qui potresti mostrare un errore o eseguire un'altra azione
