@@ -1,5 +1,5 @@
 <?php
-
+$default = 0;
 //Recuperare l'azione da svolgere
 if (isset($_GET['action'])){  //controlla se è una variabile e diversa da null
     $azione = $_GET['action'];
@@ -56,6 +56,7 @@ switch ($azione) {
                 break;
         }
         break;
+
         case 'sett':
         
             switch($operazione){
@@ -93,7 +94,6 @@ switch ($azione) {
                     $nome=$_POST['nome'];
                     $codice=$_POST['codice'];
                     $nomeGioco=$_POST['nomeGioco'];
-                    $giochi=GiocoTabella::getAll();
                     $sett=new Sett($codice,$nome,$nomeGioco);
                     SettTabella::insert($sett);
                     $setts=SettTabella::getAll();
@@ -102,6 +102,56 @@ switch ($azione) {
                 default:
                     $setts=SettTabella::getAll();
                     $view_name="./view/sett_admin.php";
+                    break;
+            }
+        break;
+
+        case 'carta':
+        
+            switch($operazione){
+                case 'modifica':
+                    $codice=$_GET['codice'];
+                    $carta=CartaTabella::getById($codice);
+                    $setts=SettTabella::getAll();
+                    $view_name="./view/carta_admin_md.php";
+                    break;
+                case 'elimina':
+                    $codice=$_GET['codice'];
+                    CartaTabella::delete($codice);
+                    
+                    $carte=CartaTabella::getAll();
+                    $view_name="./view/carta_admin.php";
+                    break;
+                case 'update':
+                    $codice=$_GET['codice'];
+                    $nuovoCodice=$_POST['nuovoCodice'];
+                    $nuovaLingua = $_POST['nuovaLingua'];
+                    $nuovaImmagine = $_POST['nuovaImmagine'];
+                    $nuovaDescrizione = $_POST['nuovaDescrizione'];
+                    CartaTabella::update($codice,$nuovoCodice,$nuovaLingua,$nuovaImmagine,$nuovaDescrizione, $default);
+                    $carte=CartaTabella::getAll();
+                    $view_name="./view/carta_admin.php";
+                    break;
+                case 'aggiungi':
+                    $setts=SettTabella::getAll();
+                    //TODO effetto visivo
+                    $view_name="./view/aggiungi_carta.php";
+                    
+                    break;
+                case 'insert':
+                    $lingua=$_POST['lingua'];
+                    $codice=$_POST['codice'];
+                    $immagine=$_POST['immagine'];
+                    $descrizione=$_POST['descrizione'];
+
+                    $carta=new Carta($codice,$lingua,$immagine, $descrizione,$default);
+                    CartaTabella::insert($carta);
+                    $carte=CartaTabella::getAll();
+                    $view_name="./view/carta_admin.php";
+                    break;
+                default:
+                    $carte=CartaTabella::getAll();
+                    $view_name="./view/carta_admin.php";
                     break;
             }
         break;

@@ -14,7 +14,7 @@ class CartaTabella {
         $quantita = $carta->getQuantita();
 
         // Query SQL per l'inserimento di un nuovo Gioco
-        $query = "INSERT INTO CARTA (Codice,lingua,immagine,descrizione,quantita)
+        $query = "INSERT INTO CARTA (Codice,Lingua,Immagine,Descrizione,QuantitàVenduta)
                   VALUES (?,?,?,?,?)";
 
         // Preparazione della query utilizzando la connessione già esistente
@@ -34,16 +34,16 @@ class CartaTabella {
     }
 
     // Metodo per aggiornare un utente nel database
-    public static function update($codice,$nuovoCodice,$NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita) {
+    public static function update($codice,$nuovoCodice,$NuovaLingua,$NuovaImmagine,$NuovaDescrizione) {
 
         // Query SQL per l'aggiornamento di un gioco
         $query = "UPDATE CARTA
-                  SET Codice = ?, Lingua = ?, Immagine = ?, Descrizone = ?, Quantita = ?
+                  SET Codice = ?, Lingua = ?, Immagine = ?, Descrizione = ?
                   WHERE Codice = ?";
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('isssii', $nuovoCodice, $NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita,$codice);
+        $stmt->bind_param('isssi', $nuovoCodice, $NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$codice);
         // Esecuzione della query
         if ($stmt->execute()) {
             // Chiudi lo statement
@@ -104,7 +104,7 @@ class CartaTabella {
                     $row['Lingua'],
                     $row['Immagine'],
                     $row['Descrizione'],
-                    $row['Quantita'],
+                    $row['QuantitàVenduta'],
                 );
 
                 // Aggiungi il gioco all'array
