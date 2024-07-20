@@ -185,7 +185,7 @@ class CartaTabella {
         $row = $result->fetch_assoc();
 
         // Verifica se è stato trovato un risultato
-        if ($result->num_rows == 1) {
+        if ($result->num_rows > 0) {
             $carta = new Carta(
                 $row['Codice'],
                 $row['Lingua'],
