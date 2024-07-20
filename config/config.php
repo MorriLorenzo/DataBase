@@ -12,4 +12,6 @@ require_once('./model/carrello/object.class.php');
 require_once('./model/carrello/provider.class.php');
 require_once('./model/carta/object.class.php');
 require_once('./model/carta/provider.class.php');
+require_once('./model/inserzione/object.class.php');
+require_once('./model/inserzione/provider.class.php');
 ?>
