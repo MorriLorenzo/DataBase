@@ -103,9 +103,9 @@ class CartaTabella {
         //prima di cancellare la carta cancello le relazioni
 
         $effetti = EffettoTabella::getAllByCodiceCarta($codice);
-        foreach($effetti : $effetto){
+        foreach($effetti as $effetto){
             CartaTabella::deleteRelation($codice,$effetto->getNome());
-        }endforeach;
+        }
 
         // Query SQL per eliminare un utente
         $query = "DELETE FROM CARTA WHERE Codice = ?";
