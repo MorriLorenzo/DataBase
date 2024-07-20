@@ -36,4 +36,9 @@ switch ($action) {
         $inserzioni=InserzioneTabella::getByEmail($email);
         $view_name="./view/inserzione.php";
         break;
+    case 'visualizza':
+        $id=$_GET['inserzione'];
+        $inserzioni=InserzioneTabella::getById($id);
+        $view_name="./view/detail_inserzione.php";
+        break;
 }

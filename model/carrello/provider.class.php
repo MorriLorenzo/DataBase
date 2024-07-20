@@ -44,9 +44,9 @@ class CarrelloTabella {
             $row = $result->fetch_assoc();
 
             // Costruisci un array con i dati estratti
-            $carrello = array(
-                'Id' => $row['Id'],
-                'EmailUtente' => $row['EmailUtente']
+            $carrello = new Carrello(
+                $row['Id'],
+                $row['EmailUtente']
             );
 
             // Chiudi lo statement
@@ -143,9 +143,81 @@ class CarrelloTabella {
         return $row['count'] > 0;
     }
 
-    public static function getInserzioniSalvate($carrello){
-        //TODO
-        return null;
+    public static function getInserzioniSalvate($idCarrello) {
+        // Array per memorizzare le inserzioni trovate
+        $inserzioni = array();
+
+        // Query SQL per ottenere gli ID delle inserzioni salvate nel carrello specificato
+        $query = "SELECT IdInserzione FROM CONTENERE WHERE IdCarrello = ?";
+        
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('i', $idCarrello); // 'i' indica il tipo di parametro (intero)
+        
+        // Esecuzione della query
+        if ($stmt->execute()) {
+            // Ottieni il risultato della query
+            $result = $stmt->get_result();
+
+            // Verifica se è stato trovato un risultato
+            if ($result->num_rows > 0) {
+                // Itera attraverso i risultati e ottieni i dettagli delle inserzioni
+                while ($row = $result->fetch_assoc()) {
+                    $idInserzione = $row['IdInserzione'];
+
+                    $inserzione=InserzioneTabella::getById($idInserzione);
+
+                    // Aggiungi l'inserzione all'array
+                    $inserzioni[] = $inserzione;
+                }
+            }
+        }
+
+        // Chiudi lo statement per CONTENERE
+        $stmt->close();
+
+        // Ritorna l'array delle inserzioni
+        return $inserzioni;
+    }
+    public static function insertIns($idCarrello, $idInserzione) {
+        // Query SQL per l'inserimento di una nuova riga nella tabella CONTENERE
+        $query = "INSERT INTO CONTENERE (IdCarrello, IdInserzione) VALUES (?, ?)";
+
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('ii', $idCarrello, $idInserzione); // 'ii' indica due parametri interi
+
+        // Esecuzione della query
+        if ($stmt->execute()) {
+            // Chiudi lo statement
+            $stmt->close();
+            return true; // Inserimento riuscito
+        } else {
+            // Chiudi lo statement
+            $stmt->close();
+            return false; // Inserimento fallito
+        }
+    }
+
+    // Funzione per eliminare una riga dalla tabella CONTENERE
+    public static function deleteIns($idCarrello, $idInserzione) {
+        // Query SQL per l'eliminazione di una riga dalla tabella CONTENERE
+        $query = "DELETE FROM CONTENERE WHERE IdCarrello = ? AND IdInserzione = ?";
+
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('ii', $idCarrello, $idInserzione); // 'ii' indica due parametri interi
+
+        // Esecuzione della query
+        if ($stmt->execute()) {
+            // Chiudi lo statement
+            $stmt->close();
+            return true; // Eliminazione riuscita
+        } else {
+            // Chiudi lo statement
+            $stmt->close();
+            return false; // Eliminazione fallita
+        }
     }
 }
 
