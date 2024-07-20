@@ -159,7 +159,7 @@ class UtenteTabella {
         // Query SQL per ottenere l'utente
         $query = "SELECT *,
         (ValutazioneTotale / NumeroRecensioni) AS ValutazioneMedia
-        FROM UTENTE WHERE NumeroRecensioni >= 15
+        FROM UTENTE WHERE NumeroRecensioni >= 15 HAVING Valutazionemedia<= 2
         ORDER BY ValutazioneMedia ASC
         LIMIT 10";
         
@@ -206,7 +206,7 @@ class UtenteTabella {
         // Query SQL per ottenere l'utente
         $query = "SELECT *,
         (ValutazioneTotale / NumeroRecensioni) AS ValutazioneMedia
-        FROM UTENTE WHERE NumeroRecensioni >= 10
+        FROM UTENTE WHERE NumeroRecensioni >= 10 HAVING Valutazionemedia>=4
         ORDER BY ValutazioneMedia DESC
         LIMIT 10";
         
@@ -253,7 +253,7 @@ class UtenteTabella {
         // Query SQL per ottenere l'utente
         $query = "SELECT *,
         (ValutazioneTotale / NumeroRecensioni) AS ValutazioneMedia
-        FROM UTENTE WHERE NumeroRecensioni >= 10
+        FROM UTENTE WHERE NumeroRecensioni >= 10 HAVING Valutazionemedia<= 2
         ORDER BY ValutazioneMedia ASC";
         
         // Preparazione della query utilizzando la connessione già esistente
