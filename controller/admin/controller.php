@@ -134,7 +134,7 @@ switch ($azione) {
                     break;
                 case 'aggiungi':
                     $setts=SettTabella::getAll();
-                    //TODO effetto visivo
+                    $effetti=EffettoTabella::getAll();
                     $view_name="./view/aggiungi_carta.php";
                     
                     break;
@@ -143,9 +143,11 @@ switch ($azione) {
                     $codice=$_POST['codice'];
                     $immagine=$_POST['immagine'];
                     $descrizione=$_POST['descrizione'];
+                    $nomeEffetto=$_POST['nomeEffetto'];
+                    list($codiceSet, $nomeSet) = explode(',', $_POST['sett']);
 
                     $carta=new Carta($codice,$lingua,$immagine, $descrizione,$default);
-                    CartaTabella::insert($carta);
+                    CartaTabella::insert($carta,$nomeEffetto,$codiceSet,$nomeSet);
                     $carte=CartaTabella::getAll();
                     $view_name="./view/carta_admin.php";
                     break;

@@ -43,7 +43,7 @@ class CartaTabella {
     }
 
     // Metodo per inserire un nuovo utente nel database
-    public static function insert(Carta $carta, EffettoVisivo $effetto, Sett $sett) {
+    public static function insert(Carta $carta, $NomeEffetto, $CodiceSett, $nomeSett) {
         // Estrai i valori dell'oggetto Utente
         $codice = $carta->getCodice();
         $lingua = $carta->getLingua();
@@ -63,8 +63,8 @@ class CartaTabella {
         if ($stmt->execute()) {
             // Chiudi lo statement
             $stmt->close();
-            CartaTabella::insertRelation($codice,$carta->getEffettoVisivo()->getNome());
-            SettTabella::insertRelation($codice,$sett->getCodice(),$sett->getNome());
+            CartaTabella::insertRelation($codice,$NomeEffetto);
+            SettTabella::insertRelation($codice,$CodiceSett,$nomeSett);
             return true; // Inserimento riuscito
         } else {
             // Chiudi lo statement

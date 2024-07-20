@@ -20,6 +20,30 @@
     <input type="text" id="descrizione" name="descrizione" required>
     <br><br>
 
+    <label for="effetto">Seleziona un effetto:</label>
+        <select id="nomeEffetto" name="nomeEffetto">
+            <?php
+            foreach ($effetti as $effetto) {
+                $nomeEffetto=$effetto->getNome();
+                echo "<option value=\"$nomeEffetto\">$nomeEffetto</option>";
+            }
+            ?>
+        </select>
+        <br><br>
+
+        <label for="set">Seleziona un set di appartenenza:</label>
+            <select id="sett" name="sett">
+                <?php
+                foreach ($setts as $sett) {
+                    $codiceSet = $sett->getCodice();
+                    $nomeSet = $sett->getNome();
+                    $value = $codiceSet . ',' . $nomeSet; // Concatenate CodiceSet and NomeSet with a comma
+                    echo "<option value=\"$value\">$codiceSet - $nomeSet</option>";
+                }
+                ?>
+            </select>
+        <br><br>
+
     <div class="form-group">
         <button type="submit">Inserisci</button>
     </div>

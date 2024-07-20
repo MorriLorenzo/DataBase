@@ -98,7 +98,7 @@ class EffettoTabella {
                 // Costruisci un oggetto Utente con i dati estratti
                 $effetto = new EffettoVisivo(
                     $row['Nome'],
-                    $row['Descrizione'],
+                    $row['Descrizione']
                 );
 
                 // Aggiungi il gioco all'array
