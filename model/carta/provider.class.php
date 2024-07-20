@@ -73,27 +73,32 @@ class CartaTabella {
         }
     }
 
-    // Metodo per aggiornare un utente nel database
-    public static function update($codice,$NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita) {
+    public static function update($codice, $NuovaLingua, $NuovaImmagine, $NuovaDescrizione, $nuovaQuantita) {
 
-        // Query SQL per l'aggiornamento di un gioco
+        // Query SQL per l'aggiornamento di una carta
         $query = "UPDATE CARTA
-                  SET Lingua = ?, Immagine = ?, Descrizone = ?, Quantita = ?
+                  SET Lingua = ?, Immagine = ?, Descrizione = ?, QuantitàVenduta = ?
                   WHERE Codice = ?";
-
+    
         // Preparazione della query utilizzando la connessione già esistente
-        $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('sssii', $NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita,$codice);
-        // Esecuzione della query
-        if ($stmt->execute()) {
-            // Chiudi lo statement
-            $stmt->close();
-            return true; // Aggiornamento riuscito
-        } else {
-            // Chiudi lo statement
-            $stmt->close();
-            return false; // Aggiornamento fallito
+        $conn = Connection::getConnessione();
+        $stmt = $conn->prepare($query);
+    
+        if ($stmt === false) {
+            // Gestione dell'errore se la preparazione fallisce
+            die('Preparazione fallita: ' . $conn->error);
         }
+    
+        // Bind dei parametri (stringa, stringa, stringa, intero, stringa)
+        $stmt->bind_param('sssii', $NuovaLingua, $NuovaImmagine, $NuovaDescrizione, $nuovaQuantita, $codice);
+    
+        // Esecuzione della query
+        $success = $stmt->execute();
+    
+        // Chiudi lo statement
+        $stmt->close();
+    
+        return $success; // Restituisce true se l'aggiornamento è riuscito, false altrimenti
     }
 
     // Metodo per eliminare un utente dal database

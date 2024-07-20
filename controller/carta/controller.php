@@ -11,6 +11,8 @@ switch ($action) {
     case 'visual':
         // Comunico con il modello per la restituzione dei dati
         $carta = CartaTabella::getById($_GET['codice']);
+        $codiceCarta=$carta->getCodice();
+        $inserzioni=InserzioneTabella::getByCodiceCarta($codiceCarta);
         // Ottenuti i dati li passo alla vista che li rappresenta
         $view_name = "./view/carta.php"; //Valorizzo il nome della vista dedicata
         break;

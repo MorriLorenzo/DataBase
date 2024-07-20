@@ -23,9 +23,11 @@ switch ($action) {
         $quantita=$_POST['quantitaAcquistata'];
         $indirizzo=$_POST['indirizzoId'];
         $idInserzione=$_GET['inserzione'];
-
+        $inserzione=InserzioneTabella::getById($idInserzione)->getCodiceCarta();
+        $carta=CartaTabella::getById($inserzione);
         $ordine=new Ordine($default,$quantita,$idInserzione,$email,$indirizzo);
         OrdineTabella::insert($ordine);
+        CartaTabella::update($carta->getCodice(),$carta->getLingua(),$carta->getImmagine(),$carta->getDescrizione(),$carta->getQuantita()+$quantita);
         $nuova= InserzioneTabella::getById($idInserzione)->getQuantita() - $quantita;
         InserzioneTabella::updateQuantita($idInserzione,$nuova);
         $ordini=OrdineTabella::getByEmailAcquirente($email);
