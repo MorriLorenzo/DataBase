@@ -56,6 +56,9 @@ if (!isset($_SESSION['email'])) {
         case 'ordine':
             include("controller/ordine/controller.php");
             break;
+        case 'recensione':
+            include("controller/recensione/controller.php");
+            break;
         default:
             // Gestione di un caso non valido o predefinito
             // Qui potresti mostrare un errore o eseguire un'altra azione

@@ -225,6 +225,53 @@ class UtenteTabella {
         // Restituire vero se il conteggio è maggiore di 0, altrimenti falso
         return $row['count'] > 0;
     }
+
+    // Metodo per aggiornare la valutazione totale e il numero di recensioni di un utente
+    public static function updateRec($destinatario, $valutazione) {
+        // Estrai l'email del destinatario
+        $email = $destinatario;
+
+        // Recupera i dati attuali dell'utente
+        $conn = Connection::getConnessione();
+        $query = "SELECT ValutazioneTotale, NumeroRecensioni FROM UTENTE WHERE Email = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Verifica se l'utente esiste
+        if ($result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            $valutazioneTotale = $row['ValutazioneTotale'];
+            $numeroRecensioni = $row['NumeroRecensioni'];
+
+            // Calcola i nuovi valori
+            $nuovaValutazioneTotale = $valutazioneTotale + $valutazione;
+            $nuovoNumeroRecensioni = $numeroRecensioni + 1;
+
+            // Aggiorna l'utente nel database
+            $updateQuery = "UPDATE UTENTE
+                            SET ValutazioneTotale = ?, NumeroRecensioni = ?
+                            WHERE Email = ?";
+            $updateStmt = $conn->prepare($updateQuery);
+            $updateStmt->bind_param('iis', $nuovaValutazioneTotale, $nuovoNumeroRecensioni, $email);
+
+            // Esecuzione della query di aggiornamento
+            if ($updateStmt->execute()) {
+                // Chiudi lo statement
+                $updateStmt->close();
+                return true; // Aggiornamento riuscito
+            } else {
+                // Chiudi lo statement
+                $updateStmt->close();
+                return false; // Aggiornamento fallito
+            }
+        } else {
+            // Chiudi lo statement
+            $stmt->close();
+            return false; // Utente non trovato
+        }
+    }
     
 }
 ?>
