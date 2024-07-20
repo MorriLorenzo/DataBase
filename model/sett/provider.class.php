@@ -4,6 +4,26 @@ class SettTabella {
 
     // Connessione al database e altre operazioni di gestione dei dati potrebbero essere gestite qui
 
+    public static function insertRelation($codiceCarta,$codiceSett,$nomeSett){
+        $query = "INSERT INTO APPARTIENE (CodiceCarta,CodiceSet,NomeSet)
+        VALUES (?,?,?)";
+
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('sss', $codiceCarta, $codiceSett, $nomeSett);
+
+        // Esecuzione della query
+        if ($stmt->execute()) {
+        // Chiudi lo statement
+        $stmt->close();
+        return true; // Inserimento riuscito
+        } else {
+        // Chiudi lo statement
+        $stmt->close();
+        return false; // Inserimento fallito
+        }
+    }
+    
     // Metodo per inserire un nuovo utente nel database
     public static function insert(Sett $sett) {
         // Estrai i valori dell'oggetto Utente

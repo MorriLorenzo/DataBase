@@ -1,9 +1,9 @@
 <?php if (empty($carte)): ?>
     <p style="text-align: center;">Nessuna carta disponibile per il set <?php echo $_GET['nome']?></p>
 <?php else: ?>
-
+    <h1>Carte associate al set <?php echo $_GET['nome']?></h1>
     <div class="container-img">
-    
+        
         <div class="table2">
             <table>
                 <tr><th>Descrizione carte</th><th></th></tr>
