@@ -13,8 +13,8 @@
     <?php foreach ($giochi as $gioco): ?>
     <tr>
         <td><?php echo $gioco->getNome(); ?></td>
-        <td><a href="./index.php?model=admin&action=sett&operazione=vista&nome=<?php echo $gioco->getNome()?>">Visualizza set associati</a></td>
-        <td><a href="./index.php?model=admin&action=gioco&operazione=modifica&nome=<?php echo $gioco->getNome()?>">Modifica</a></td>    
+        <td><a href="./index.php?model=admin&action=gioco&operazione=modifica&nome=<?php echo $gioco->getNome()?>">Modifica</a></td>
+        <td><a href="./index.php?model=admin&action=gioco&operazione=elimina&nome=<?php echo $gioco->getNome() ?>">Elimina</a></td>    
     </tr>
     <?php endforeach; ?>
     

@@ -4,7 +4,7 @@
 if (isset($_GET['action'])){  //controlla se è una variabile e diversa da null
     $action = $_GET['action'];
 } else {
-    $action = 'visual';  //valore di default
+    $action = 'venduta';  //valore di default
 }
 
 switch ($action) {
@@ -13,5 +13,9 @@ switch ($action) {
         $carta = CartaTabella::getById("diobastardo");
         // Ottenuti i dati li passo alla vista che li rappresenta
         $view_name = "./view/carta.php"; //Valorizzo il nome della vista dedicata
+        break;
+    case 'venduta':
+        $carta = CartaTabella::getCartaPiuVenduta();
+        $view_name= "./view/carta.php";;
         break;
 }

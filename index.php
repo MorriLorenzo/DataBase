@@ -14,7 +14,7 @@ if (!isset($_SESSION['email'])) {
     if (isset($_GET['model'])){
         $model = $_GET['model'];
     } else {
-        $model = 'gioco'; // Imposta un valore predefinito se $_GET['model'] non è definito
+        $model = 'home'; // Imposta un valore predefinito se $_GET['model'] non è definito
     }
 
     switch ($model) {
@@ -45,6 +45,9 @@ if (!isset($_SESSION['email'])) {
             include("controller/carrello/controller.php");
             break;
         case 'carta':
+            include("controller/carta/controller.php");
+            break;
+        case 'home':
             include("controller/carta/controller.php");
             break;
         default:

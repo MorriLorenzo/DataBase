@@ -1,4 +1,4 @@
-<h2>Aggiungi Gioco</h2>
+<h1>Aggiungi Gioco</h1>
         <?php if (isset($_SESSION['error_msg'])): ?>
         <p class="error-message"><?php echo $_SESSION['error_msg']; ?></p>
         <?php unset($_SESSION['error_msg']); ?>

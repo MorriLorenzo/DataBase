@@ -52,7 +52,7 @@ class CartaTabella {
         $quantita = $carta->getQuantita();
 
         // Query SQL per l'inserimento di un nuovo Gioco
-        $query = "INSERT INTO CARTA (Codice,lingua,immagine,descrizione,quantita)
+        $query = "INSERT INTO CARTA (Codice,Lingua,Immagine,Descrizione,QuantitàVenduta)
                   VALUES (?,?,?,?,?)";
 
         // Preparazione della query utilizzando la connessione già esistente
@@ -153,8 +153,7 @@ class CartaTabella {
                     $row['Lingua'],
                     $row['Immagine'],
                     $row['Descrizione'],
-                    $row['Quantita'],
-                    
+                    $row['QuantitàVenduta'],
                 );
 
                 // Aggiungi il gioco all'array
@@ -293,5 +292,35 @@ class CartaTabella {
     //viva le donne!     
     }
 */
+
+    public static function getCartaPiuVenduta() {
+        // Connessione al database (assicurati di sostituire con le tue credenziali)
+        $conn = Connection::getConnessione();
+
+        // Query SQL per ottenere la carta più venduta
+        $query = "SELECT Codice, Lingua, Immagine, Descrizione, QuantitàVenduta
+                FROM CARTA
+                ORDER BY QuantitàVenduta DESC
+                LIMIT 1";
+
+        // Esecuzione della query
+        $result = $conn->query($query);
+
+        if ($result->num_rows > 0) {
+            // Recupera la riga dei risultati
+            $row = $result->fetch_assoc();
+
+            // Crea e restituisce un oggetto Carta
+            return new Carta(
+                $row['Codice'],
+                $row['Lingua'],
+                $row['Immagine'],
+                $row['Descrizione'],
+                $row['QuantitàVenduta']
+            );
+        } else {
+            return null; // Nessuna carta trovata
+        }
+    }
 }
 ?>
