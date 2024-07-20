@@ -6,5 +6,5 @@ echo "SONO ADMIN WOW";
     <a href="./index.php?model=admin&action=gioco">Lista giochi</a>
     <a href="./index.php?model=admin&action=sett">Lista sets</a>
     <a href="./index.php?model=admin&action=carta">Lista carte</a>
-    <a href="#">Visualizza i peggiori e blokka</a>
+    <a href="./index.php?model=admin&action=peggiori">Visualizza i peggiori e blokka</a>
 </div>

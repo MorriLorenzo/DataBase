@@ -155,6 +155,53 @@ class UtenteTabella {
         return $utenti;
     }
 
+    public static function getPeggiori() {
+        // Query SQL per ottenere l'utente
+        $query = "SELECT *,
+        (ValutazioneTotale / NumeroRecensioni) AS ValutazioneMedia
+        FROM UTENTE WHERE NumeroRecensioni >= 15
+        ORDER BY ValutazioneMedia ASC
+        LIMIT 10";
+        
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+
+        // Esecuzione della query
+        $stmt->execute();
+
+        // Ottieni il risultato della query
+        $result = $stmt->get_result();
+
+        // Array per memorizzare gli utenti
+        $utenti = array();
+
+        // Verifica se è stato trovato un risultato
+        if ($result->num_rows > 0) {
+
+            while ($row = $result->fetch_assoc()) {
+                // Costruisci un oggetto Utente con i dati estratti
+                $utente = new Utente(
+                    $row['Email'],
+                    $row['Nome'],
+                    $row['Cognome'],
+                    $row['Password'],
+                    (bool) $row['Bloccato'],
+                    (int) $row['ValutazioneTotale'],
+                    (int) $row['NumeroRecensioni']
+                );
+
+                // Aggiungi l'utente all'array
+                $utenti[] = $utente;
+            }
+        }
+    
+        // Chiudi lo statement
+        $stmt->close();
+
+        // Ritorna array Utente
+        return $utenti;
+    }
+
     public static function getByEmail($email) {
 
         // Query SQL per ottenere l'utente
