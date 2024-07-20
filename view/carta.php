@@ -12,9 +12,12 @@
         </table>
     </div>
 </div>
-<form action="./index.php?model=inserzione&action=aggiungi&carta=<?php echo $carta->getCodice()?>" method="post">
+    <?php $utente=UtenteTabella::getByEmail($_SESSION['email']);?>
+    <?php if (!$utente->isBloccato()) : ?>
+    <form action="./index.php?model=inserzione&action=aggiungi&carta=<?php echo $carta->getCodice()?>" method="post">
         <button type="submit">Aggiungi Inserzione</button>
     </form>
+    <?php endif; ?>
 <div class="inserzioni-table">
     <?php if (!empty($inserzioni)) : ?>
         <table>

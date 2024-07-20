@@ -162,4 +162,16 @@ switch ($azione) {
             $view_name="./view/listaUtenti.php";
 
         break;
+    case 'blocca':
+        $utente = $_GET['utente'];
+        UtenteTabella::blocca($utente);
+        $utenti=UtenteTabella::getPeggiori();
+        $view_name="./view/listaUtenti.php";
+        break;
+    case 'sblocca':
+        $utente = $_GET['utente'];
+        UtenteTabella::sblocca($utente);
+        $utenti=UtenteTabella::getPeggiori();
+        $view_name="./view/listaUtenti.php";
+        break;
 }

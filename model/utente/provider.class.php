@@ -412,6 +412,58 @@ class UtenteTabella {
             return false; // Utente non trovato
         }
     }
+
+    /**
+     * Blocca un utente impostando il campo Bloccato a 1.
+     *
+     * @param string $email L'email dell'utente da bloccare.
+     * @return bool True se l'operazione è riuscita, altrimenti false.
+     */
+    public static function blocca($email) {
+        // Query SQL per bloccare l'utente
+        $query = "UPDATE UTENTE SET Bloccato = 1 WHERE Email = ?";
+
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        
+        // Associa il parametro
+        $stmt->bind_param('s', $email);
+
+        // Esecuzione della query
+        $success = $stmt->execute();
+
+        // Chiudi lo statement
+        $stmt->close();
+
+        // Restituisce true se l'operazione è riuscita, altrimenti false
+        return $success;
+    }
+
+    /**
+     * Blocca un utente impostando il campo Bloccato a 1.
+     *
+     * @param string $email L'email dell'utente da bloccare.
+     * @return bool True se l'operazione è riuscita, altrimenti false.
+     */
+    public static function sblocca($email) {
+        // Query SQL per bloccare l'utente
+        $query = "UPDATE UTENTE SET Bloccato = 0 WHERE Email = ?";
+
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        
+        // Associa il parametro
+        $stmt->bind_param('s', $email);
+
+        // Esecuzione della query
+        $success = $stmt->execute();
+
+        // Chiudi lo statement
+        $stmt->close();
+
+        // Restituisce true se l'operazione è riuscita, altrimenti false
+        return $success;
+    }
     
 }
 ?>

@@ -97,7 +97,7 @@ class CartaTabella {
     }
 
     // Metodo per eliminare un utente dal database
-    public static function delete(Carta $carta,$nomeEffetto) {
+    public static function delete(Carta $carta) {
 
         $codice = $carta->getCodice();
 
@@ -106,6 +106,13 @@ class CartaTabella {
         $effetti = EffettoTabella::getAllByCodiceCarta($codice);
         foreach($effetti as $effetto){
             CartaTabella::deleteRelation($codice,$effetto->getNome());
+        }
+
+        $setts = SettTabella::getAllByCodiceCarta($codice);
+        foreach($setts as $sett){
+            $codiceSet=$sett->getCodice();
+            $nomeSet=$sett->getNome();
+            SettTabella::deleteRelation($codice,$codiceSet,$nomeSet);
         }
 
         // Query SQL per eliminare un utente

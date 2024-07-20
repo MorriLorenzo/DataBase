@@ -23,6 +23,26 @@ class SettTabella {
         return false; // Inserimento fallito
         }
     }
+
+    public static function deleteRelation($codiceCarta,$codiceSett,$nomeSett){
+        $query = "DELETE FROM APPARTIENE (CodiceSet,NomeSet,CodiceCarta)
+        VALUES (?,?,?)";
+
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('sss', $codiceSett, $nomeSett, $codiceCarta);
+
+        // Esecuzione della query
+        if ($stmt->execute()) {
+        // Chiudi lo statement
+        $stmt->close();
+        return true; // Inserimento riuscito
+        } else {
+        // Chiudi lo statement
+        $stmt->close();
+        return false; // Inserimento fallito
+        }
+    }
     
     // Metodo per inserire un nuovo utente nel database
     public static function insert(Sett $sett) {
