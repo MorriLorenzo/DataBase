@@ -13,6 +13,7 @@
         <tr>
             <td><?php echo $sett->getCodice(); ?></td>
             <td><?php echo $sett->getNome(); ?></td>
+            <td><a href="./index.php?model=carta&action=menuSett&nome=<?php echo $sett->getNome()?>?codice="<?php echo $sett->getCodice()?>>visualizza carte associate</a></td>
         </tr>
     <?php endforeach; ?>
     </table>
