@@ -9,6 +9,12 @@
         <td><?php echo $utente->getEmail(); ?></td>
         <th>Media</th>
         <td><?php echo (float)$utente->getValutazioneTotale()/(float)($utente->getNumeroRecensioni()); ?></td>
+        <th>Azione</th>
+        <?php if (!$utente->isBloccato()) : ?>
+            <td><a href="./index.php?model=admin&action=blocca&utente=<?php echo $utente->getEmail();?>">Blocca</a></td>
+        <?php else :?>
+            <td><a href="./index.php?model=admin&action=sblocca&utente=<?php echo $utente->getEmail();?>">Sblocca</a></td>
+        <?php endif;?>
     </tr>
     <?php }?>
     </table>
