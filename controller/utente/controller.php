@@ -45,4 +45,12 @@ switch ($azione) {
         // Ottenuti i dati li passo alla vista che li rappresenta
         $view_name = "./view/profile.php"; //Valorizzo il nome della vista dedicata
         break;
+    case 'migliori':
+        $utenti = UtenteTabella::getMigliori();
+        $view_name = "./view/listaUtenti2.php";
+        break;
+    case 'peggiori':
+        $utenti = UtenteTabella::getPeggioriInf();
+        $view_name = "./view/listaUtenti2.php";
+        break;
 }

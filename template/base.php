@@ -192,6 +192,8 @@
             <a href="./index.php?model=gioco&action=menu">Giochi</a>
             <a href="./index.php?model=inserzione&action=utente">Inserzioni</a>
             <a href="./index.php?model=ordine&action=utente">Ordini</a>
+            <a href="./index.php?model=utente&action=migliori">Migliori venditori</a>
+            <a href="./index.php?model=utente&action=peggiori">Peggiori venditori</a>
             <a href="./index.php?model=recensione&action=visualizza">Recensioni ricevute</a>
             <?php if (UtenteTabella::isAdmin($_SESSION['email'])): ?>
                 <a href="./index.php?model=admin&action=azioni">Sezione Admin</a>
