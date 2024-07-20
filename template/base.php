@@ -180,7 +180,7 @@
 
     <div class="navbar">
         <div class="navbar-container">
-            <a href="./index.php">Home</a>
+            <a href="./index.php?model=home">Home</a>
             <a href="./index.php?model=utente&action=profile">Profilo</a>
             <a href="./index.php?model=gioco&action=menu">Giochi</a>
 
