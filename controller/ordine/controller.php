@@ -26,7 +26,10 @@ switch ($action) {
 
         $ordine=new Ordine($default,$quantita,$idInserzione,$email,$indirizzo);
         OrdineTabella::insert($ordine);
+        $nuova= InserzioneTabella::getById($idInserzione)->getQuantita() - $quantita;
+        InserzioneTabella::updateQuantita($idInserzione,$nuova);
         $ordini=OrdineTabella::getByEmailAcquirente($email);
+        
         $view_name="./view/ordine.php";
         break;
     

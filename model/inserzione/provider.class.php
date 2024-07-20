@@ -253,5 +253,28 @@ class InserzioneTabella {
         // Ritorna array di Inserzioni
         return $inserzioni;
     }
+
+    // Metodo per aggiornare la quantità di un'inserzione
+    public static function updateQuantita($id, $nuovaQuantita) {
+        // Query SQL per l'aggiornamento della quantità
+        $query = "UPDATE INSERZIONE
+                  SET Quantità = ?
+                  WHERE Id = ?";
+
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('ii', $nuovaQuantita, $id);
+
+        // Esecuzione della query
+        if ($stmt->execute()) {
+            // Chiudi lo statement
+            $stmt->close();
+            return true; // Aggiornamento riuscito
+        } else {
+            // Chiudi lo statement
+            $stmt->close();
+            return false; // Aggiornamento fallito
+        }
+    }
 }
 ?>
