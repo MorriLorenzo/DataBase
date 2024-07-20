@@ -24,6 +24,7 @@
                     <th>Prezzo (€)</th>
                     <th>Quantità</th>
                     <th>Email Venditore</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +34,11 @@
                         <td><?php echo $inserzione->getPrezzo(); ?> €</td>
                         <td><?php echo $inserzione->getQuantita(); ?></td>
                         <td><?php echo $inserzione->getEmailVenditore(); ?></td>
+                        <td>
+                            <form action="./index.php?model=ordine&action=aggiungi&inserzione=<?php echo $inserzione->getId()?>" method="post" style="display: inline;">
+                                <button type="submit">Acquista</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

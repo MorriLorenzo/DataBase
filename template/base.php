@@ -183,8 +183,8 @@
             <a href="./index.php?model=home">Home</a>
             <a href="./index.php?model=utente&action=profile">Profilo</a>
             <a href="./index.php?model=gioco&action=menu">Giochi</a>
-            <a href="./index.php?model=inserzione&action=utente">Mie Inserzioni</a>
-
+            <a href="./index.php?model=inserzione&action=utente">Inserzioni</a>
+            <a href="./index.php?model=ordine&action=utente">Ordini</a>
             <?php if (UtenteTabella::isAdmin($_SESSION['email'])): ?>
                 <a href="./index.php?model=admin&action=azioni">Sezione Admin</a>
             <?php endif; ?>

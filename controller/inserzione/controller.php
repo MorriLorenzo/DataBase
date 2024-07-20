@@ -8,13 +8,6 @@ if (isset($_GET['action'])){  //controlla se è una variabile e diversa da null
 }
 
 switch ($action) {
-    case 'visual':
-        $id=$_GET['id'];
-        // Comunico con il modello per la restituzione dei dati
-        $inserzione = InserzioneTabella::getById($id);
-        // Ottenuti i dati li passo alla vista che li rappresenta
-        $view_name = "./view/inserzione.php"; //Valorizzo il nome della vista dedicata
-        break;
     case 'elimina':
         $id=$_GET['id'];
         InserzioneTabella::delete($id);
