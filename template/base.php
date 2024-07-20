@@ -170,6 +170,15 @@
             height: auto; /* Mantiene le proporzioni dell'immagine */
         }
 
+        .table2 {
+            justify-content: center;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
 
 </head>

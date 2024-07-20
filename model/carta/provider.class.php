@@ -201,7 +201,7 @@ class CartaTabella {
         return $carta;
     }
 
-    public static function getAllBySett($nomeSet,$codiceSet) {
+    public static function getAllBySett($codiceSet,$nomeSet) {
         // Query SQL per ottenere l'utente
         $query = "SELECT * FROM CARTA AS C 
           JOIN APPARTIENE AS AP ON C.Codice = AP.CodiceCarta 
@@ -219,7 +219,6 @@ class CartaTabella {
 
         // Array per memorizzare gli utenti
         $carte = array();
-
         // Verifica se è stato trovato un risultato
         if ($result->num_rows > 0) {
 
@@ -230,7 +229,7 @@ class CartaTabella {
                     $row['Lingua'],
                     $row['Immagine'],
                     $row['Descrizione'],
-                    $row['Quantita'],
+                    $row['QuantitàVenduta']
                 );
 
                 // Aggiungi il gioco all'array
