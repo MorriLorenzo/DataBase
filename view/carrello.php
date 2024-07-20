@@ -14,7 +14,8 @@
     <tr>
         <td><?php echo $inserzione->getId(); ?></td>
         <td><?php echo $inserzione->getInformazione(); ?></td>
-        <td><a href="?model=inserzione&action=visualizza&id=<?php echo $inserzione->getId()?>">Visualizza inserzione</a></td>
+        <td><a href="?model=inserzione&action=visualizza&inserzione=<?php echo $inserzione->getId()?>">Visualizza inserzione</a></td>
+        <td><a href="?model=carrello&action=elimina&inserzione=<?php echo $inserzione->getId()?>">Rimuovi</a></td>
     </tr>
 
     <?php endforeach; ?>

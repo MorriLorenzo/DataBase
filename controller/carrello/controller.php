@@ -10,7 +10,24 @@ if (isset($_GET['action'])){  //controlla se è una variabile e diversa da null
 switch ($azione) {
     case 'visualizza':
         $utente=UtenteTabella::getByEmail($_SESSION['email']);
-        $carrello=CarrelloTabella::getByEmail($_SESSION['email']);
+        $carrello=CarrelloTabella::getByEmail($_SESSION['email'])->getId();
+        $inserzioni=CarrelloTabella::getInserzioniSalvate($carrello);
+        $view_name = "./view/carrello.php"; //Valorizzo il nome della vista dedicata
+        break;
+    case 'salva':
+        $utente=UtenteTabella::getByEmail($_SESSION['email']);
+        $carrello=CarrelloTabella::getByEmail($_SESSION['email'])->getId();
+        $inserzione=$_GET['inserzione'];
+        CarrelloTabella::insertIns($carrello,$inserzione);
+        $inserzioni=CarrelloTabella::getInserzioniSalvate($carrello);
+        $view_name = "./view/carrello.php"; //Valorizzo il nome della vista dedicata
+        break;
+
+    case 'elimina':
+        $utente=UtenteTabella::getByEmail($_SESSION['email']);
+        $carrello=CarrelloTabella::getByEmail($_SESSION['email'])->getId();
+        $inserzione=$_GET['inserzione'];
+        CarrelloTabella::deleteIns($carrello,$inserzione);
         $inserzioni=CarrelloTabella::getInserzioniSalvate($carrello);
         $view_name = "./view/carrello.php"; //Valorizzo il nome della vista dedicata
         break;

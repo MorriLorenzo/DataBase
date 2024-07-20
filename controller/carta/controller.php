@@ -16,6 +16,8 @@ switch ($action) {
         break;
     case 'venduta':
         $carta = CartaTabella::getCartaPiuVenduta();
+        $codiceCarta=$carta->getCodice();
+        $inserzioni=InserzioneTabella::getByCodiceCarta($codiceCarta);
         $view_name= "./view/carta.php";
         break;
     case 'visualSett':

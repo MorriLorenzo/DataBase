@@ -65,5 +65,10 @@ class Indirizzo {
     public function setCivico($Civico) {
         $this->Civico = $Civico;
     }
+
+    // Metodo toString
+    public function __toString() {
+        return $this->Via . ' ' . $this->Civico . ', ' . $this->CAP . ' ' . $this->Provincia . ', ' . $this->Stato;
+    }
 }
 ?>
