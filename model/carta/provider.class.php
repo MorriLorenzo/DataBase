@@ -2,10 +2,48 @@
 
 class CartaTabella {
 
-    // Connessione al database e altre operazioni di gestione dei dati potrebbero essere gestite qui
+    public static function deleteRelation($codice,$nome){
+        $query = "DELETE FROM RAPPRESENTAZIONE (CodiceCarta,NomeEffetto)
+        VALUES (?,?)";
+
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('ss', $codice, $nome);
+
+        // Esecuzione della query
+        if ($stmt->execute()) {
+        // Chiudi lo statement
+        $stmt->close();
+        return true; // Inserimento riuscito
+        } else {
+        // Chiudi lo statement
+        $stmt->close();
+        return false; // Inserimento fallito
+        }
+    }
+
+    public static function insertRelation($codice, $nome){
+        $query = "INSERT INTO RAPPRESENTAZIONE (CodiceCarta,NomeEffetto)
+        VALUES (?,?)";
+
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('ss', $codice, $nome);
+
+        // Esecuzione della query
+        if ($stmt->execute()) {
+        // Chiudi lo statement
+        $stmt->close();
+        return true; // Inserimento riuscito
+        } else {
+        // Chiudi lo statement
+        $stmt->close();
+        return false; // Inserimento fallito
+        }
+    }
 
     // Metodo per inserire un nuovo utente nel database
-    public static function insert(Carta $carta) {
+    public static function insert(Carta $carta, EffettoVisivo $effetto) {
         // Estrai i valori dell'oggetto Utente
         $codice = $carta->getCodice();
         $lingua = $carta->getLingua();
@@ -19,12 +57,13 @@ class CartaTabella {
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('isssi', $codice, $lingua, $immagine,$descrizione,$quantita);
+        $stmt->bind_param('ssssi', $codice, $lingua, $immagine,$descrizione,$quantita);
 
         // Esecuzione della query
         if ($stmt->execute()) {
             // Chiudi lo statement
             $stmt->close();
+            CartaTabella::insertRelation($codice,$carta->getEffettoVisivo()->getNome());
             return true; // Inserimento riuscito
         } else {
             // Chiudi lo statement
@@ -34,16 +73,16 @@ class CartaTabella {
     }
 
     // Metodo per aggiornare un utente nel database
-    public static function update($codice,$nuovoCodice,$NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita) {
+    public static function update($codice,$NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita) {
 
         // Query SQL per l'aggiornamento di un gioco
         $query = "UPDATE CARTA
-                  SET Codice = ?, Lingua = ?, Immagine = ?, Descrizone = ?, Quantita = ?
+                  SET Lingua = ?, Immagine = ?, Descrizone = ?, Quantita = ?
                   WHERE Codice = ?";
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('isssii', $nuovoCodice, $NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita,$codice);
+        $stmt->bind_param('sssii', $NuovaLingua,$NuovaImmagine,$NuovaDescrizione,$nuovaQuantita,$codice);
         // Esecuzione della query
         if ($stmt->execute()) {
             // Chiudi lo statement
@@ -57,13 +96,23 @@ class CartaTabella {
     }
 
     // Metodo per eliminare un utente dal database
-    public static function delete($codice) {
+    public static function delete(Carta $carta,$nomeEffetto) {
+
+        $codice = $carta->getCodice();
+
+        //prima di cancellare la carta cancello le relazioni
+
+        $effetti = EffettoTabella::getAllByCodiceCarta($codice);
+        foreach($effetti : $effetto){
+            CartaTabella::deleteRelation($codice,$effetto->getNome());
+        }endforeach;
+
         // Query SQL per eliminare un utente
         $query = "DELETE FROM CARTA WHERE Codice = ?";
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('i', $codice);
+        $stmt->bind_param('s', $codice);
 
         // Esecuzione della query
         if ($stmt->execute()) {
@@ -105,6 +154,7 @@ class CartaTabella {
                     $row['Immagine'],
                     $row['Descrizione'],
                     $row['Quantita'],
+                    
                 );
 
                 // Aggiungi il gioco all'array

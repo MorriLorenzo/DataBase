@@ -112,13 +112,15 @@ class EffettoTabella {
         // Ritorna array Utente
         return $effetti;
     }
-/*
+
     //ottengo tutti gli effetti visivi(versioni) di una singola carta dato il suo codice, 
-    //ovviamente prendo le carte che lo hanno
     public static function getAllByCodiceCarta($CodiceCarta) {
         // Query SQL per ottenere l'utente
-        $query = "SELECT * FROM CARTA JOIN RAPPRESENTAZIONE AS R ON R.CodiceCarta = CARTA.Codice
-        WHERE R.CodiceCarta = ?";
+        $query = "SELECT EV.Nome, EV.Descrizione 
+          FROM CARTA AS C
+          JOIN RAPPRESENTAZIONE AS R ON R.CodiceCarta = C.Codice
+          JOIN EFFETTO_VISIVO AS EV ON R.NomeEffetto = EV.Nome
+          WHERE C.Codice = ?";
         
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
@@ -131,23 +133,20 @@ class EffettoTabella {
         $result = $stmt->get_result();
 
         // Array per memorizzare gli utenti
-        $carte = array();
+        $effetti = array();
 
         // Verifica se è stato trovato un risultato
         if ($result->num_rows > 0) {
 
             while ($row = $result->fetch_assoc()) {
                 // Costruisci un oggetto Utente con i dati estratti
-                $carta = new Carta(
-                    $row['Codice'],
-                    $row['Lingua'],
-                    $row['Immagine'],
-                    $row['Descrizione'],
-                    $row['QuantitàVenduta'],
+                $effetto = new EffettoVisivo(
+                    $row['Nome'],
+                    $row['Descrizione']
                 );
 
                 // Aggiungi il gioco all'array
-                $carte[] = $carta;
+                $effetti[] = $effetto;
             }
         }
     
@@ -155,9 +154,9 @@ class EffettoTabella {
         $stmt->close();
 
         // Ritorna array Utente
-        return $carte;
+        return $effetti;
     }
-*/
+
     public static function getByCodiceNome($codice,$nome) {
 
         // Query SQL per ottenere l'utente
