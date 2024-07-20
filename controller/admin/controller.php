@@ -55,4 +55,54 @@ switch ($azione) {
                 $view_name="./view/gioco_admin.php";
                 break;
         }
+        break;
+        case 'sett':
+        
+            switch($operazione){
+                case 'modifica':
+                    $nome=$_GET['nome'];
+                    $codice=$_GET['codice'];
+                    $sett=SettTabella::getByCodiceNome($codice,$nome);
+                    $giochi=GiocoTabella::getAll();
+                    $view_name="./view/sett_admin_md.php";
+                    break;
+                case 'elimina':
+                    $nome=$_GET['nome'];
+                    $codice=$_GET['codice'];
+                    SettTabella::delete($codice,$nome);
+                    
+                    $setts=SettTabella::getAll();
+                    $view_name="./view/sett_admin.php";
+                    break;
+                case 'update':
+                    $nome=$_GET['nome'];
+                    $nuovoNome=$_POST['nuovoNome'];
+                    $codice=$_GET['codice'];
+                    $nuovoCodice=$_POST['nuovoCodice'];
+                    $nuovoNomeGioco=$_POST['nuovoNomeGioco'];
+                    SettTabella::update($codice,$nome,$nuovoCodice,$nuovoNome,$nuovoNomeGioco);
+                    $setts=SettTabella::getAll();
+                    $view_name="./view/sett_admin.php";
+                    break;
+                case 'aggiungi':
+                    $giochi=GiocoTabella::getAll();
+                    $view_name="./view/aggiungi_sett.php";
+                    
+                    break;
+                case 'insert':
+                    $nome=$_POST['nome'];
+                    $codice=$_POST['codice'];
+                    $nomeGioco=$_POST['nomeGioco'];
+                    $giochi=GiocoTabella::getAll();
+                    $sett=new Sett($codice,$nome,$nomeGioco);
+                    SettTabella::insert($sett);
+                    $setts=SettTabella::getAll();
+                    $view_name="./view/sett_admin.php";
+                    break;
+                default:
+                    $setts=SettTabella::getAll();
+                    $view_name="./view/sett_admin.php";
+                    break;
+            }
+        break;
 }
