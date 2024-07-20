@@ -115,6 +115,48 @@ class SettTabella {
         return $setts;
     }
 
+    public static function getAllByCodiceCarta($codiceCarta) {
+        // Query SQL per ottenere l'utente
+        $query = "SELECT * FROM SETT AS S JOIN APPARTIENE AS AP ON S.Codice = AP.CodiceSet AND S.Nome = AP.NomeSet
+        JOIN CARTA AS C ON C.Codice = AP.CodiceCarta 
+        WHERE C.Codice = ?";
+        
+        // Preparazione della query utilizzando la connessione già esistente
+        $stmt = Connection::getConnessione()->prepare($query);
+        $stmt->bind_param('s', $codiceCarta);
+
+        // Esecuzione della query
+        $stmt->execute();
+
+        // Ottieni il risultato della query
+        $result = $stmt->get_result();
+
+        // Array per memorizzare gli utenti
+        $setts = array();
+
+        // Verifica se è stato trovato un risultato
+        if ($result->num_rows > 0) {
+
+            while ($row = $result->fetch_assoc()) {
+                // Costruisci un oggetto Utente con i dati estratti
+                $sett = new Sett(
+                    $row['CodiceSet'],
+                    $row['NomeSet'],
+                    $row['NomeGioco']
+                );
+
+                // Aggiungi il gioco all'array
+                $setts[] = $sett;
+            }
+        }
+    
+        // Chiudi lo statement
+        $stmt->close();
+
+        // Ritorna array Utente
+        return $setts;
+    }
+
     public static function getAllByNomeGioco($nomeGioco) {
         // Query SQL per ottenere l'utente
         $query = "SELECT * FROM SETT WHERE NomeGioco = ?";

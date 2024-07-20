@@ -6,6 +6,7 @@
     
         <div class="table2">
             <table>
+                <tr><th>Descrizione carte</th><th></th></tr>
                 <?php foreach($carte as $carta){ ?>
                     <tr>
                         <td>                    

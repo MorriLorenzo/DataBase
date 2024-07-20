@@ -2,7 +2,10 @@
     <p style="text-align: center;">Nessun set disponibile per il gioco <?php echo $_GET['nome']?></p>
 <?php else: ?>
 
+<?php if (!empty($_GET['nome'])): ?>
     <h1>Tabella set del gioco <?php echo $_GET['nome']?></h1>
+<?php endif;?>  
+    
     <table>
     
     <tr>

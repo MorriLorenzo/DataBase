@@ -14,4 +14,9 @@ switch ($action) {
         // Ottenuti i dati li passo alla vista che li rappresenta
         $view_name = "./view/sett.php"; //Valorizzo il nome della vista dedicata
         break;
+    case 'settCarta':
+        $setts = SettTabella::getAllByCodiceCarta($_GET['codice']);
+        $view_name = "./view/sett.php";
+        break;
+
 }
