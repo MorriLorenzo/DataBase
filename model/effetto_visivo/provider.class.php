@@ -1,43 +1,22 @@
 <?php
 
-class SettTabella {
+class EffettoTabella {
 
     // Connessione al database e altre operazioni di gestione dei dati potrebbero essere gestite qui
 
-    public static function insertRelation($codiceCarta,$codiceSett,$nomeSett){
-        $query = "INSERT INTO APPARTIENE (CodiceCarta,CodiceSet,NomeSet)
-        VALUES (?,?,?)";
-
-        // Preparazione della query utilizzando la connessione già esistente
-        $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('sss', $codiceCarta, $codiceSett, $nomeSett);
-
-        // Esecuzione della query
-        if ($stmt->execute()) {
-        // Chiudi lo statement
-        $stmt->close();
-        return true; // Inserimento riuscito
-        } else {
-        // Chiudi lo statement
-        $stmt->close();
-        return false; // Inserimento fallito
-        }
-    }
-    
     // Metodo per inserire un nuovo utente nel database
-    public static function insert(Sett $sett) {
+    public static function insert(EffettoVisivo $effetto) {
         // Estrai i valori dell'oggetto Utente
-        $nome = $sett->getNome();
-        $codice = $sett->getCodice();
-        $nomeGioco = $sett->getNomeGioco();
+        $nome = $effetto->getNome();
+        $descrizione = $effetto->getDescrizione();
 
         // Query SQL per l'inserimento di un nuovo Gioco
-        $query = "INSERT INTO SETT (Codice,Nome,NomeGioco)
-                  VALUES (?,?,?)";
+        $query = "INSERT INTO EFFETTO_VISIVO (Codice,Descrizione)
+                  VALUES (?,?)";
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('iss', $codice, $nome, $nomeGioco);
+        $stmt->bind_param('ss', $codice, $descrizione);
 
         // Esecuzione della query
         if ($stmt->execute()) {
@@ -52,16 +31,16 @@ class SettTabella {
     }
 
     // Metodo per aggiornare un utente nel database
-    public static function update($codice,$nome,$nuovoCodice,$NuovoNome,$NuovoNomeGioco) {
+    public static function update($nome,$NuovoNome,$NuovaDescrizione) {
 
         // Query SQL per l'aggiornamento di un gioco
-        $query = "UPDATE Sett
-                  SET Codice = ?, Nome = ?, NomeGioco = ? 
-                  WHERE Codice = ? AND Nome = ?";
+        $query = "UPDATE EFFETTO_VISIVO
+                  SET Nome = ?, Descrizione = ? 
+                  WHERE Nome = ?";
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('issis', $nuovoCodice, $NuovoNome,$NuovoNomeGioco,$codice,$nome);
+        $stmt->bind_param('sss', $NuovoNome,$NuovaDescrizione,$nome);
         // Esecuzione della query
         if ($stmt->execute()) {
             // Chiudi lo statement
@@ -75,13 +54,13 @@ class SettTabella {
     }
 
     // Metodo per eliminare un utente dal database
-    public static function delete($codice,$nome) {
+    public static function delete($nome) {
         // Query SQL per eliminare un utente
-        $query = "DELETE FROM SETT WHERE Codice = ? AND Nome = ?";
+        $query = "DELETE FROM EFFETTO_VISIVO WHERE Nome = ?";
 
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('is', $codice,$nome);
+        $stmt->bind_param('s',$nome);
 
         // Esecuzione della query
         if ($stmt->execute()) {
@@ -98,7 +77,7 @@ class SettTabella {
     // Metodo per ottenere tutti gli utenti dal database
     public static function getAll() {
         // Query SQL per ottenere l'utente
-        $query = "SELECT * FROM SETT";
+        $query = "SELECT * FROM EFFETTO_VISIVO";
         
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
@@ -110,21 +89,20 @@ class SettTabella {
         $result = $stmt->get_result();
 
         // Array per memorizzare gli utenti
-        $setts = array();
+        $effetti = array();
 
         // Verifica se è stato trovato un risultato
         if ($result->num_rows > 0) {
 
             while ($row = $result->fetch_assoc()) {
                 // Costruisci un oggetto Utente con i dati estratti
-                $sett = new Sett(
-                    $row['Codice'],
+                $effetto = new EffettoVisivo(
                     $row['Nome'],
-                    $row['NomeGioco'],
+                    $row['Descrizione'],
                 );
 
                 // Aggiungi il gioco all'array
-                $setts[] = $sett;
+                $effetti[] = $effetto;
             }
         }
     
@@ -132,18 +110,21 @@ class SettTabella {
         $stmt->close();
 
         // Ritorna array Utente
-        return $setts;
+        return $effetti;
     }
 
-    public static function getAllByCodiceCarta($codiceCarta) {
+    //ottengo tutti gli effetti visivi(versioni) di una singola carta dato il suo codice, 
+    public static function getAllByCodiceCarta($CodiceCarta) {
         // Query SQL per ottenere l'utente
-        $query = "SELECT * FROM SETT AS S JOIN APPARTIENE AS AP ON S.Codice = AP.CodiceSet AND S.Nome = AP.NomeSet
-        JOIN CARTA AS C ON C.Codice = AP.CodiceCarta 
-        WHERE C.Codice = ?";
+        $query = "SELECT EV.Nome, EV.Descrizione 
+          FROM CARTA AS C
+          JOIN RAPPRESENTAZIONE AS R ON R.CodiceCarta = C.Codice
+          JOIN EFFETTO_VISIVO AS EV ON R.NomeEffetto = EV.Nome
+          WHERE C.Codice = ?";
         
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('s', $codiceCarta);
+        $stmt->bind_param('s',$CodiceCarta);
 
         // Esecuzione della query
         $stmt->execute();
@@ -152,61 +133,20 @@ class SettTabella {
         $result = $stmt->get_result();
 
         // Array per memorizzare gli utenti
-        $setts = array();
+        $effetti = array();
 
         // Verifica se è stato trovato un risultato
         if ($result->num_rows > 0) {
 
             while ($row = $result->fetch_assoc()) {
                 // Costruisci un oggetto Utente con i dati estratti
-                $sett = new Sett(
-                    $row['CodiceSet'],
-                    $row['NomeSet'],
-                    $row['NomeGioco']
-                );
-
-                // Aggiungi il gioco all'array
-                $setts[] = $sett;
-            }
-        }
-    
-        // Chiudi lo statement
-        $stmt->close();
-
-        // Ritorna array Utente
-        return $setts;
-    }
-
-    public static function getAllByNomeGioco($nomeGioco) {
-        // Query SQL per ottenere l'utente
-        $query = "SELECT * FROM SETT WHERE NomeGioco = ?";
-        
-        // Preparazione della query utilizzando la connessione già esistente
-        $stmt = Connection::getConnessione()->prepare($query);
-        $stmt->bind_param('s',$nomeGioco);
-
-        // Esecuzione della query
-        $stmt->execute();
-
-        // Ottieni il risultato della query
-        $result = $stmt->get_result();
-
-        // Array per memorizzare gli utenti
-        $setts = array();
-
-        // Verifica se è stato trovato un risultato
-        if ($result->num_rows > 0) {
-
-            while ($row = $result->fetch_assoc()) {
-                // Costruisci un oggetto Utente con i dati estratti
-                $sett = new Sett(
-                    $row['Codice'],
+                $effetto = new EffettoVisivo(
                     $row['Nome'],
-                    $row['NomeGioco'],
+                    $row['Descrizione']
                 );
 
                 // Aggiungi il gioco all'array
-                $setts[] = $sett;
+                $effetti[] = $effetto;
             }
         }
     
@@ -214,13 +154,13 @@ class SettTabella {
         $stmt->close();
 
         // Ritorna array Utente
-        return $setts;
+        return $effetti;
     }
 
     public static function getByCodiceNome($codice,$nome) {
 
         // Query SQL per ottenere l'utente
-        $query = "SELECT * FROM SETT WHERE Codice = ? AND Nome = ?";
+        $query = "SELECT * FROM EFFETTO_VISIVO WHERE Codice = ? AND Nome = ?";
         
         // Preparazione della query utilizzando la connessione già esistente
         $stmt = Connection::getConnessione()->prepare($query);
@@ -238,7 +178,7 @@ class SettTabella {
             $row = $result->fetch_assoc();
 
             // Costruisci un oggetto Gioco con i dati estratti
-            $sett = new Sett(
+            $effetto = new EffettoVisivo(
                 $row['Codice'],
                 $row['Nome'],
                 $row['NomeGioco'],
@@ -248,7 +188,7 @@ class SettTabella {
             $stmt->close();
 
             // Ritorna l'oggetto Utente
-            return $sett;
+            return $effetto;
         } else {
             // Chiudi lo statement
             $stmt->close();

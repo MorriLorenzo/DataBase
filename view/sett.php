@@ -2,7 +2,10 @@
     <p style="text-align: center;">Nessun set disponibile per il gioco <?php echo $_GET['nome']?></p>
 <?php else: ?>
 
+<?php if (!empty($_GET['nome'])): ?>
     <h1>Tabella set del gioco <?php echo $_GET['nome']?></h1>
+<?php endif;?>  
+    
     <table>
     
     <tr>
@@ -13,6 +16,7 @@
         <tr>
             <td><?php echo $sett->getCodice(); ?></td>
             <td><?php echo $sett->getNome(); ?></td>
+            <td><a href="./index.php?model=carta&action=visualSett&nome=<?php echo $sett->getNome()?>&codice=<?php echo $sett->getCodice()?>">visualizza carte associate</a></td>
         </tr>
     <?php endforeach; ?>
     </table>

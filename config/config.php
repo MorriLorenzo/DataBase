@@ -16,4 +16,6 @@ require_once('./model/inserzione/object.class.php');
 require_once('./model/inserzione/provider.class.php');
 require_once('./model/ordine/object.class.php');
 require_once('./model/ordine/provider.class.php');
+require_once('./model/effetto_visivo/object.class.php');
+require_once('./model/effetto_visivo/provider.class.php');
 ?>
